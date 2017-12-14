@@ -19,8 +19,9 @@ describe 'SampleImporter' do
     SAMPLE_FILE
   end
   let(:sample_data) { SampleData.new(StringIO.new(sample_file_contents)) }
+  let(:imported_product) { Spree::Product.first }
   
-  it "imports a sample item" do
+  it "imports sample items" do
     expect(Spree::Product.count).to eq 0
     SampleDataImporter.import(sample_data)
     expect(Spree::Product.count).not_to eq 0
@@ -38,9 +39,15 @@ describe 'SampleImporter' do
     expect(bags_taxon).not_to be_nil
   end
 
-  it "creates a Bags taxon if it does not exists yet" do
+  it "creates a master variant for imported product" do
     expect(Spree::Variant.count).to eq 0
     SampleDataImporter.import(sample_data)
     expect(Spree::Variant.count).not_to eq 0
+  end
+
+  it "fills in price" do
+    SampleDataImporter.import(sample_data)
+
+    expect(imported_product).not_to be_nil
   end
 end

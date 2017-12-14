@@ -12,7 +12,6 @@ class SampleDataImporter
 
     product = create_product(item)
     associate_product_with_category(product, item)
-    create_variant(product)
 
     product.save
   end
@@ -29,10 +28,6 @@ class SampleDataImporter
                                  shipping_category: default_shipping,
                                  available_on: item["availability_date"],
                                  slug: item["slug"]
-  end
-
-  def self.create_variant(product)
-    Spree::Variant.create is_master: false, product: product
   end
 
   def self.create_category(product, item)

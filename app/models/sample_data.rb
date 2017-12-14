@@ -1,8 +1,8 @@
 require 'csv'
 
 class SampleData
-  def initialize(sample_file_contents)
-    @data = parse_sample_contents(sample_file_contents)
+  def initialize(sample_file_io)
+    @data = parse_sample_io(sample_file_io).force
   end
 
   def method_missing(m, *args, &block)
@@ -15,13 +15,10 @@ class SampleData
 
   private
 
-  def parse_sample_contents(contents)
-    parsed = CSV.parse(contents, col_sep: ?; )
-    parsed.map! { |row| row[1..-1] } # get rid of first column which is empty
-
-    header = parsed.first # first row is header
-    parsed[1..-1].map do |row|
-      SampleItem.new(header, row)
+  def parse_sample_io(sample_file_io)
+    csv = CSV.new(sample_file_io, headers: true, col_sep: ';').lazy
+    csv.map do |row|
+      SampleItem.new(row.headers.drop(1), row.fields.drop(1))
     end
   end
 end

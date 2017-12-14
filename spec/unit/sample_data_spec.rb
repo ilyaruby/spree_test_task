@@ -11,9 +11,10 @@ describe 'SampleData' do
     SAMPLE_FILE
   end
   let(:sample_keys) { ["name", "description", "price", "availability_date", "slug", "stock_total", "category"] }
+  let(:sample_file_name) { 'sample.csv' }
 
   context 'csv data parsing' do
-    let(:sample_data) { SampleData.new(sample_file_contents) }
+    let(:sample_data) { SampleData.new(StringIO.new(sample_file_contents)) }
     let(:sample_item) { sample_data.first }
 
     it 'will parse sample data' do

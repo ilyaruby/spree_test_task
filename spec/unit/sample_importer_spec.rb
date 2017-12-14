@@ -18,7 +18,7 @@ describe 'SampleImporter' do
       ;Spree Tote;Consequuntur quibusdam repellendus quia non. Iste et pariatur nulla fugit. In ipsum accusantium quasi mollitia et eos. Ullam veniam quis ut adipisci est autem molestiae eos. Ab necessitatibus et rerum quasi quia debitis eum.;14,99;2017-12-30T14:55:22.913Z;spree-tote;20;Bags
     SAMPLE_FILE
   end
-  let(:sample_data) { SampleData.new(sample_file_contents) }
+  let(:sample_data) { SampleData.new(StringIO.new(sample_file_contents)) }
   
   it "imports a sample item" do
     expect(Spree::Product.count).to eq 0

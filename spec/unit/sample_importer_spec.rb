@@ -6,6 +6,10 @@ describe 'SampleImporter' do
     Spree::Taxonomy.find_by(name: "Categories")
   end
 
+  def bags_taxon
+    Spree::Taxon.find_by(name: "Bags")
+  end
+
   let(:sample_file_contents) do
     <<~SAMPLE_FILE
       ;name;description;price;availability_date;slug;stock_total;category
@@ -26,5 +30,11 @@ describe 'SampleImporter' do
     expect(categories_taxonomy).to be_nil
     SampleDataImporter.import(sample_data)
     expect(categories_taxonomy).not_to be_nil
+  end
+
+  it "creates a Bags taxon if it does not exists yet" do
+    expect(bags_taxon).to be_nil
+    SampleDataImporter.import(sample_data)
+    expect(bags_taxon).not_to be_nil
   end
 end

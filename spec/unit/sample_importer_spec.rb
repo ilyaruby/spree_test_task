@@ -15,7 +15,7 @@ describe 'SampleImporter' do
       ;name;description;price;availability_date;slug;stock_total;category
       ;Ruby on Rails Bag;Animi officia aut amet molestiae atque excepturi. Placeat est cum occaecati molestiae quia. Ut soluta ipsum doloremque perferendis eligendi voluptas voluptatum.;22,99;2017-12-04T14:55:22.913Z;ruby-on-rails-bag;15;Bags
       ;Spree Bag;Rerum quaerat autem non nihil quo laborum aut hic. Iure adipisci neque eum qui dolor. Velit sed molestias nostrum et dolore. Amet sed repellendus quod et ad.;25,99;2017-12-04T14:55:22.913Z;spree-bag;5;Bags
-      ;Spree Tote;Consequuntur quibusdam repellendus quia non. Iste et pariatur nulla fugit. In ipsum accusantium quasi mollitia et eos. Ullam veniam quis ut adipisci est autem molestiae eos. Ab necessitatibus et rerum quasi quia debitis eum.;14,99;2017-12-30T14:55:22.913Z;spree-tote;20;Bags
+      ;Spree Tote;Consequuntur quibusdam repellendus quia non. Iste et pariatur nulla fugit. In ipsum accusantium quasi mollitia et eos. Ullam veniam quis ut adipisci est autem molestiae eos. Ab necessitatibus et rerum quasi quia debitis eum.;14,99;2017-12-30T14:55:22.913Z;spree-tote;20;Bagz
     SAMPLE_FILE
   end
   let(:sample_data) { SampleData.new(StringIO.new(sample_file_contents)) }
@@ -39,7 +39,7 @@ describe 'SampleImporter' do
     expect(bags_taxon).not_to be_nil
   end
 
-  it "creates a master variant for imported product" do
+  it "creates a master variant for an imported product" do
     expect(Spree::Variant.count).to eq 0
     SampleDataImporter.import(sample_data)
     expect(Spree::Variant.count).not_to eq 0
@@ -47,7 +47,20 @@ describe 'SampleImporter' do
 
   it "fills in price" do
     SampleDataImporter.import(sample_data)
-
     expect(imported_product).not_to be_nil
+  end
+
+  it "creates StockItem for an imported product" do
+    expect(Spree::StockItem.count).to eq 0
+    SampleDataImporter.import(sample_data)
+    expect(Spree::StockItem.count).not_to eq 0
+  end
+
+  it "fills in count_on_hand to StockItem" do
+    SampleDataImporter.import(sample_data)
+    variant = Spree::Variant.find_by(product_id: imported_product.id)
+    stock_item = Spree::StockItem.find_by(variant_id: variant.id)
+    expect(stock_item.count_on_hand).not_to be_zero
+    expect(stock_item.count_on_hand).not_to be_nil
   end
 end

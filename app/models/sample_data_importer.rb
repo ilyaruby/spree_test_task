@@ -11,9 +11,10 @@ class SampleDataImporter
     return if item["name"].empty?
 
     product = create_product(item)
-    associate_product_with_category(product, item)
-
     product.save
+
+    associate_product_with_category(product, item)
+    update_stock_item(product, item)
   end
 
   def self.associate_product_with_category(product, item)
@@ -22,16 +23,27 @@ class SampleDataImporter
   end
 
   def self.create_product(item)
-    product = Spree::Product.new name: item["name"],
-                                 description: item["description"],
-                                 price: item["price"],
-                                 shipping_category: default_shipping,
-                                 available_on: item["availability_date"],
-                                 slug: item["slug"]
+    Spree::Product.new name: item["name"],
+                       description: item["description"],
+                       price: item["price"],
+                       shipping_category: default_shipping,
+                       available_on: item["availability_date"],
+                       slug: item["slug"]
+  end
+
+  def self.find_or_create_variant(product)
+    Spree::Variant.find_or_create_variant(is_master: false, product: product).save!
+  end
+
+  def self.update_stock_item(product, item)
+    variant = Spree::Variant.find_by(product_id: product.id)
+    stock_item = variant.stock_items.first
+    stock_item.count_on_hand = item["stock_total"]
+    stock_item.save!
   end
 
   def self.create_category(product, item)
-    category = find_or_create_category(item['category'])
+    find_or_create_category(item['category'])
   end
   
   def self.categories_taxonomy

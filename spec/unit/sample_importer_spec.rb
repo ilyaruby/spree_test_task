@@ -37,4 +37,10 @@ describe 'SampleImporter' do
     SampleDataImporter.import(sample_data)
     expect(bags_taxon).not_to be_nil
   end
+
+  it "creates a Bags taxon if it does not exists yet" do
+    expect(Spree::Variant.count).to eq 0
+    SampleDataImporter.import(sample_data)
+    expect(Spree::Variant.count).not_to eq 0
+  end
 end

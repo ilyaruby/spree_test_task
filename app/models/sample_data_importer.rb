@@ -12,7 +12,7 @@ class SampleDataImporter
 
     product = create_product(item)
     associate_product_with_category(product, item)
-    #create_stock_items(product, item)
+    create_variant(product)
 
     product.save
   end
@@ -31,14 +31,14 @@ class SampleDataImporter
                                  slug: item["slug"]
   end
 
+  def self.create_variant(product)
+    Spree::Variant.create is_master: false, product: product
+  end
+
   def self.create_category(product, item)
     category = find_or_create_category(item['category'])
   end
   
-  #def self.create_stock_items(product, item)
-  #  spree_stock_total = item["spree_stock_items"]
-  #end
-
   def self.categories_taxonomy
     Spree::Taxonomy.find_by(name: "Categories") ||
       Spree::Taxonomy.create(name: "Categories")

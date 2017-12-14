@@ -1,5 +1,4 @@
 class SampleItem
-  attr_reader :data
   def initialize(header, row)
     @data = Hash.new
     header.each_with_index { |key, i| @data[key] = row[i]}

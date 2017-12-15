@@ -11,7 +11,7 @@ class SampleDataImporter
     return if item["name"].empty?
 
     product = create_product(item)
-    product.save
+    product.save!
 
     associate_product_with_category(product, item)
     update_stock_item(product, item)
@@ -37,7 +37,7 @@ class SampleDataImporter
 
   def self.update_stock_item(product, item)
     variant = Spree::Variant.find_by(product_id: product.id)
-    stock_item = variant.stock_items.first
+    stock_item = Spree::StockItem.find_or_create_by(variant_id: variant.id, stock_location: default_stock_location)
     stock_item.count_on_hand = item["stock_total"]
     stock_item.save!
   end
@@ -57,6 +57,10 @@ class SampleDataImporter
   end
 
   def self.default_shipping
-    Spree::ShippingCategory.find_by(name: "Default")
+    Spree::ShippingCategory.find_or_create_by(name: "Default")
+  end
+
+  def self.default_stock_location
+    Spree::StockLocation.find_or_create_by(name: "default")
   end
 end

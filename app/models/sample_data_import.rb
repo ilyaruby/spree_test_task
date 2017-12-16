@@ -1,4 +1,10 @@
-class SampleDataImporter
+class SampleDataImport
+  include ActiveModel::Model
+
+  def persisted?
+    false
+  end
+
   def self.import(sample_data)
     sample_data.each do |sample_item|
       import_item(sample_item)
@@ -8,7 +14,7 @@ class SampleDataImporter
   private
 
   def self.import_item(item)
-    return if item["name"].empty?
+    return unless item["name"]
 
     product = create_product(item)
     product.save!

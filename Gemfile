@@ -40,8 +40,21 @@ gem 'delayed_job_active_record'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry-rescue', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'binding_of_caller'
+  gem 'pry-stack_explorer'
   gem 'rspec-rails'
+  gem 'pry'
+  gem 'pry-rails'
+end
+
+group :test do
+  gem 'factory_bot_rails', '~> 4.8'
+  gem 'factory_girl_rails', '~> 4.8'
+  gem 'capybara', '~> 2.4'
+  gem 'ffaker'
+  #gem 'factory_bot'
+  #gem 'capybara'
 end
 
 group :development do

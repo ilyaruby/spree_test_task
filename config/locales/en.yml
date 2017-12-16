@@ -31,3 +31,7 @@
 
 en:
   hello: "Hello world"
+  sample_data_queued: 'Sample data was queued for import'
+  form:
+    sample_data_import:
+      heading: 'Submit sample data in CSV format for import'

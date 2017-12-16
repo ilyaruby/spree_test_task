@@ -1,2 +1,5 @@
 # VIM swap files
 **/*.sw?
+tmp/sample_data_import_files/*
+!tmp/sample_data_import_files/.keep
+log/*

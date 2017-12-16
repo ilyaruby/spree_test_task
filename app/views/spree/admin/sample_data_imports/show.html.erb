@@ -1,0 +1,7 @@
+<h2><%= t('form.sample_data_import.heading') %></h2>
+
+<%= render partial: 'spree/admin/shared/error_messages', locals: { target: @product } %>
+<%= form_tag({:action => :create}, multipart: true) do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag( "Import" ) %>
+<% end %>

@@ -1,4 +1,4 @@
-RSpec.shared_context "shared_sample_data" do
+RSpec.shared_context 'shared_sample_data' do
   let(:sample_file_contents) do
     <<~SAMPLE_FILE
       ;name;description;price;availability_date;slug;stock_total;category
@@ -8,7 +8,7 @@ RSpec.shared_context "shared_sample_data" do
     SAMPLE_FILE
   end
 
-  let(:sample_keys) { ["name", "description", "price", "availability_date", "slug", "stock_total", "category"] }
+  let(:sample_keys) { %w[name description price availability_date slug stock_total category] }
   let(:sample_file_name) { 'sample.csv' }
   let(:sample_file_io) { StringIO.new(sample_file_contents) }
   let(:sample_data) { SampleData.new(sample_file_io) }

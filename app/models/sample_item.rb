@@ -1,7 +1,7 @@
 class SampleItem
   def initialize(header, row)
-    @data = Hash.new
-    header.each_with_index { |key, i| @data[key] = row[i]}
+    @data = {}
+    header.each_with_index { |key, i| @data[key] = row[i] }
   end
 
   def method_missing(m, *args, &block)

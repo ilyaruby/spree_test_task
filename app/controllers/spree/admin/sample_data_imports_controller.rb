@@ -5,6 +5,7 @@ module Spree
     def show
       @sample_data_import = SampleDataImport.new
     end
+
     def create
       uploaded_tempfile = params[:file].path
       basename = File.basename(uploaded_tempfile)
@@ -14,6 +15,7 @@ module Spree
       flash[:notice] = t('sample_data_queued')
       redirect_to admin_products_path
     end
+
     def import
     end
   end
